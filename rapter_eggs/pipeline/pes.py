@@ -17,7 +17,8 @@ from rapter_eggs.schema.task import TaskDocument
 from rapter_eggs.settings import (
     JAGUAR_FUNCTIONAL_QUALITY_SCORES,
     JAGUAR_BASIS_QUALITY_SCORES,
-    JAGUAR_SOLVENT_MODEL_QUALITY_SCORES
+    JAGUAR_SOLVENT_MODEL_QUALITY_SCORES,
+    JAGUAR_ALLOWED_TASK_TYPES
 )
 
 
