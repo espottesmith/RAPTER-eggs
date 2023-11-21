@@ -1,4 +1,4 @@
-from typing import Dict
+from typing import Dict, List
 
 JAGUAR_FUNCTIONAL_QUALITY_SCORES: Dict[str, int] = {
     "wb97x-v": 4,
@@ -21,3 +21,5 @@ JAGUAR_SOLVENT_MODEL_QUALITY_SCORES: Dict[str, int] = {
     "PCM": 3,
     "VACUUM": 1
 }
+
+JAGUAR_ALLOWED_TASK_TYPES: List[JaguarTaskType] = [t.value for t in JaguarTaskType]

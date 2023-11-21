@@ -11,17 +11,16 @@ from maggma.builders import Builder
 from maggma.stores import Store
 from maggma.utils import grouper
 
-from emmet.builders.settings import EmmetBuildSettings
 from emmet.core.utils import jsanitize
-from emmet.core.jaguar.calc_types import LevelOfTheory
-from emmet.core.jaguar.pes import PESPointDoc
-from emmet.core.jaguar.reactions import ReactionDoc
 
+from rapter_egss.schema.calc_types import LevelOfTheory
+from rapter_eggs.schema.pes import PESPointDoc
+from rapter_egss.schema.reactions import ReactionDoc
 
 __author__ = "Evan Spotte-Smith <ewcspottesmith@lbl.gov>"
 
 
-SETTINGS = EmmetBuildSettings()
+# TODO: do we just dump this?
 
 
 def group_reactions(reactions: List[ReactionDoc], consider_metal_bonds: bool = False):
@@ -146,7 +145,6 @@ class ReactionAssociationBuilder(Builder):
         minima: Store,
         assoc: Store,
         query: Optional[Dict] = None,
-        settings: Optional[EmmetBuildSettings] = None,
         **kwargs,
     ):
         """
@@ -156,7 +154,6 @@ class ReactionAssociationBuilder(Builder):
             minima: Store of PES minima
             assoc: Store to be populated with ReactionDocs
             query: dictionary to limit PES points to be analyzed
-            settings: EmmetSettings to use in the build process
         """
 
         self.tasks = tasks
@@ -164,7 +161,6 @@ class ReactionAssociationBuilder(Builder):
         self.minima = minima
         self.assoc = assoc
         self.query = query if query else dict()
-        self.settings = EmmetBuildSettings.autoload(settings)
         self.kwargs = kwargs
 
         super().__init__(sources=[tasks, transition_states, minima], targets=[assoc], **kwargs)
@@ -546,7 +542,6 @@ class ReactionBuilder(Builder):
         reactions: Store,
         query: Optional[Dict] = None,
         consider_metal_bonds: bool = False,
-        settings: Optional[EmmetBuildSettings] = None,
         **kwargs,
     ):
         """
@@ -556,14 +551,12 @@ class ReactionBuilder(Builder):
             query: dictionary to limit reactions to be analyzed
             consider_metal_bonds: when determining if two reactions are the
                 same, should metal bonding be taken into account?
-            settings: EmmetSettings to use in the build process
         """
 
         self.assoc = assoc
         self.reactions = reactions
         self.query = query if query else dict()
         self.consider_metal_bonds = consider_metal_bonds
-        self.settings = EmmetBuildSettings.autoload(settings)
         self.kwargs = kwargs
 
         super().__init__(sources=[assoc], targets=[reactions], **kwargs)

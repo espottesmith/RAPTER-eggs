@@ -3,39 +3,39 @@ from itertools import chain
 from math import ceil
 from typing import Dict, Iterable, Iterator, List, Optional
 
-
 from maggma.builders import Builder
 from maggma.stores import Store
 from maggma.utils import grouper
 
-from emmet.builders.settings import EmmetBuildSettings
 from emmet.core.utils import group_molecules, jsanitize
-from emmet.core.jaguar.pes import (
+from rapter_eggs.schema.pes import (
     best_lot,
     evaluate_lot,
     PESPointDoc,
 )
-from emmet.core.jaguar.task import TaskDocument
+from rapter_eggs.schema.task import TaskDocument
+from rapter_eggs.settings import (
+    JAGUAR_FUNCTIONAL_QUALITY_SCORES,
+    JAGUAR_BASIS_QUALITY_SCORES,
+    JAGUAR_SOLVENT_MODEL_QUALITY_SCORES
+)
 
 
 __author__ = "Evan Spotte-Smith <ewcspottesmith@lbl.gov>"
 
 
-SETTINGS = EmmetBuildSettings()
-
-
 def evaluate_point(
     pes_point: PESPointDoc,
-    funct_scores: Dict[str, int] = SETTINGS.JAGUAR_FUNCTIONAL_QUALITY_SCORES,
-    basis_scores: Dict[str, int] = SETTINGS.JAGUAR_BASIS_QUALITY_SCORES,
-    solvent_scores: Dict[str, int] = SETTINGS.JAGUAR_SOLVENT_MODEL_QUALITY_SCORES,
+    funct_scores: Dict[str, int] = JAGUAR_FUNCTIONAL_QUALITY_SCORES,
+    basis_scores: Dict[str, int] = JAGUAR_BASIS_QUALITY_SCORES,
+    solvent_scores: Dict[str, int] = JAGUAR_SOLVENT_MODEL_QUALITY_SCORES,
 ):
     """
     Helper function to order optimization calcs by
     - Level of theory
     - Electronic energy
 
-    :param mol_doc: Molecule to be evaluated
+    :param pes_point: PESPointDoc to be evaluated
     :param funct_scores: Scores for various density functionals
     :param basis_scores: Scores for various basis sets
     :param solvent_scores: Scores for various implicit solvent models
@@ -54,7 +54,7 @@ def evaluate_point(
 
 
 def filter_and_group_tasks(
-    tasks: List[TaskDocument], settings: EmmetBuildSettings
+    tasks: List[TaskDocument]
 ) -> Iterator[List[TaskDocument]]:
     """
     Groups tasks by identical structure
@@ -65,7 +65,7 @@ def filter_and_group_tasks(
         for task in tasks
         if any(
             allowed_type is task.task_type
-            for allowed_type in settings.JAGUAR_ALLOWED_TASK_TYPES
+            for allowed_type in JAGUAR_ALLOWED_TASK_TYPES
         )
     ]
 
@@ -109,7 +109,6 @@ class PESPointBuilder(Builder):
         minima: Store,
         ts: Store,
         query: Optional[Dict] = None,
-        settings: Optional[EmmetBuildSettings] = None,
         negative_threshold: float = -75.0,
         **kwargs,
     ):
@@ -119,7 +118,6 @@ class PESPointBuilder(Builder):
             minima: Store of PES minima to prepare
             ts: Store of transition-states (TS) to prepare
             query: dictionary to limit tasks to be analyzed
-            settings: EmmetSettings to use in the build process
             negative_threshold: Threshold for imaginary frequencies. Points
                 with one imaginary frequency >= this value will be considered
                 as valid.
@@ -129,7 +127,6 @@ class PESPointBuilder(Builder):
         self.minima = minima
         self.ts = ts
         self.query = query if query else dict()
-        self.settings = EmmetBuildSettings.autoload(settings)
         self.negative_threshold = negative_threshold
         self.kwargs = kwargs
 
@@ -204,7 +201,7 @@ class PESPointBuilder(Builder):
 
         self.logger.info("PES point builder started")
         self.logger.info(
-            f"Allowed task types: {[task_type.value for task_type in self.settings.JAGUAR_ALLOWED_TASK_TYPES]}"
+            f"Allowed task types: {[task_type.value for task_type in JAGUAR_ALLOWED_TASK_TYPES]}"
         )
 
         self.logger.info("Setting indexes")
@@ -299,7 +296,7 @@ class PESPointBuilder(Builder):
         self.logger.debug(f"Processing {hash} : {task_ids}")
         docs = list()
 
-        for group in filter_and_group_tasks(tasks, self.settings):
+        for group in filter_and_group_tasks(tasks):
             try:
                 docs.append(PESPointDoc.from_tasks(group))
             except Exception as e:
