@@ -65,7 +65,7 @@ def filter_and_group_tasks(
         task
         for task in tasks
         if any(
-            allowed_type is task.task_type
+            allowed_type is task.task_type.value
             for allowed_type in JAGUAR_ALLOWED_TASK_TYPES
         )
     ]
@@ -202,7 +202,7 @@ class PESPointBuilder(Builder):
 
         self.logger.info("PES point builder started")
         self.logger.info(
-            f"Allowed task types: {[task_type.value for task_type in JAGUAR_ALLOWED_TASK_TYPES]}"
+            f"Allowed task types: {JAGUAR_ALLOWED_TASK_TYPES}"
         )
 
         self.logger.info("Setting indexes")
