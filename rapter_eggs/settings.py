@@ -1,5 +1,7 @@
 from typing import Dict, List
 
+from rapter_eggs.schema.calc_types import TaskType
+
 JAGUAR_FUNCTIONAL_QUALITY_SCORES: Dict[str, int] = {
     "wb97x-v": 4,
     "wb97x-d": 3,
@@ -22,4 +24,4 @@ JAGUAR_SOLVENT_MODEL_QUALITY_SCORES: Dict[str, int] = {
     "VACUUM": 1
 }
 
-JAGUAR_ALLOWED_TASK_TYPES: List[JaguarTaskType] = [t.value for t in JaguarTaskType]
+JAGUAR_ALLOWED_TASK_TYPES: List[TaskType] = [t.value for t in TaskType]

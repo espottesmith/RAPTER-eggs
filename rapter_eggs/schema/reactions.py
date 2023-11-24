@@ -8,7 +8,6 @@ from pymatgen.analysis.graphs import MoleculeGraph
 from pymatgen.analysis.local_env import OpenBabelNN, metal_edge_extender
 
 from emmet.core.mpid import MPID, MPculeID  # TODO: consider switching to MPculeID-based IDs
-from emmet.core.settings import EmmetSettings
 from emmet.core.structure import MoleculeMetadata
 
 from rapter_eggs.schema.calc_types import LevelOfTheory, TaskType
@@ -21,8 +20,6 @@ from rapter_eggs.schema.pes import (
 
 __author__ = "Evan Spotte-Smith <ewcspottesmith@lbl.gov>"
 
-
-SETTINGS = EmmetSettings()
 
 METALS = ["Li", "Na", "Mg", "Ca", "Zn", "Al"]
 
