@@ -87,3 +87,7 @@ def hash_tasks(
             collection.remove_docs({"calcid": {"$in": [x["calcid"] for x in updated_docs]}})
             collection.update(docs=updated_docs, key=["calcid"])
             updated_docs = list()
+
+    if len(updated_docs) > 0:
+        collection.remove_docs({"calcid": {"$in": [x["calcid"] for x in updated_docs]}})
+        collection.update(docs=updated_docs, key=["calcid"])        

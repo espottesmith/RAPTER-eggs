@@ -221,10 +221,11 @@ class PESPointBuilder(Builder):
         )
 
         processed_tasks = set(self.minima.distinct("task_ids")) | set(self.ts.distinct("task_ids"))
-        to_process_tasks = {d[self.tasks.key] for d in all_tasks} - processed_tasks
+        self.logger.info(f"{len(processed_tasks)} processed")
+        to_process_tasks = {str(d[self.tasks.key]) for d in all_tasks} - processed_tasks
         to_process_hashes = set()
         for d in all_tasks:
-            if d[self.tasks.key] in to_process_tasks:
+            if str(d[self.tasks.key]) in to_process_tasks:
                 hash = d.get("species_hash")
                 if hash:
                     to_process_hashes.add(hash)
