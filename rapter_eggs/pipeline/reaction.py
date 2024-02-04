@@ -15,7 +15,7 @@ from emmet.core.utils import jsanitize
 
 from rapter_egss.schema.calc_types import LevelOfTheory
 from rapter_eggs.schema.pes import PESPointDoc
-from rapter_egss.schema.reactions import ReactionDoc
+from rapter_eggs.schema.reactions import ReactionDoc
 
 __author__ = "Evan Spotte-Smith <ewcspottesmith@lbl.gov>"
 
