@@ -134,7 +134,8 @@ class TaskDocument(MoleculeMetadata):
     input: Dict[str, Any] = Field(
         {}, description="Summary of the original Jaguar inputs"
     )
-    output = Field(OutputSummary())
+
+    output: OutputSummary = Field(OutputSummary())
 
     tags: Dict[str, Any] = Field(None, description="Metadata tags")
 
