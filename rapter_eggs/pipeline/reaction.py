@@ -13,7 +13,7 @@ from maggma.utils import grouper
 
 from emmet.core.utils import jsanitize
 
-from rapter_egss.schema.calc_types import LevelOfTheory
+from rapter_eggs.schema.calc_types import LevelOfTheory
 from rapter_eggs.schema.pes import PESPointDoc
 from rapter_eggs.schema.reactions import ReactionDoc
 
