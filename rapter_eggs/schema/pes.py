@@ -6,7 +6,8 @@ from pydantic import Field
 from pymatgen.core.structure import Molecule
 from pymatgen.analysis.molecule_matcher import MoleculeMatcher
 
-from emmet.core.mpid import MPID, MPculeID  # TODO: convert to using MPculeID
+from emmet.core.mpid import MPID, MPculeID
+from emmet.core.utils import get_molecule_id
 from emmet.core.material import CoreMoleculeDoc, PropertyOrigin
 from emmet.core.structure import MoleculeMetadata
 
@@ -253,16 +254,13 @@ class PESPointDoc(CoreMoleculeDoc, MoleculeMetadata):
                 ]  # type: ignore
             ]
 
-            # Molecule ID
-            possible_mol_ids = [task.calcid for task in geometry_optimizations]
-
-            point_id = min(possible_mol_ids)
-
             best_structure_calc = sorted(geometry_optimizations, key=evaluate_task)[0]
             coord_hash = best_structure_calc.coord_hash
             species_hash = best_structure_calc.species_hash
             species_hash_nometal = best_structure_calc.species_hash_nometal
             molecule = best_structure_calc.output.molecule
+
+            molecule_id = get_molecule_id(molecule, node_attr="coords")
 
             freq_tasks = sorted(
                 [
@@ -320,14 +318,14 @@ class PESPointDoc(CoreMoleculeDoc, MoleculeMetadata):
                     best_entries[lot] = entry
 
         for entry in entries:
-            entry["entry_id"] = point_id
+            entry["entry_id"] = molecule_id
 
         return cls.from_molecule(
             molecule=molecule,
             freq_entry=freq_entry,
             frequencies=frequencies,
             vibrational_frequency_modes=frequency_modes,
-            molecule_id=point_id,
+            molecule_id=molecule_id,
             initial_molecules=initial_molecules,
             last_updated=last_updated,
             task_ids=calc_ids,
@@ -368,21 +366,23 @@ class PESPointDoc(CoreMoleculeDoc, MoleculeMetadata):
         task_types = {task.calcid: task.task_type for task in task_group}
         calc_types = {task.calcid: task.calc_type for task in task_group}
 
-        # Molecule ID
-        point_id = min([task.calcid for task in task_group])
+        # Choose arbitrary task
+        chosen_task = sorted(task_group, key=lambda x: x.calcid)[0]
 
-        # Choose any random structure for metadata
-        if isinstance(task_group[0].input["molecule"], dict):
-            molecule = Molecule.from_dict(task_group[0].input["molecule"])
+        if isinstance(chosen_task.input["molecule"], dict):
+            molecule = Molecule.from_dict(chosen_task.input["molecule"])
         else:
-            molecule = task_group[0].input["molecule"]
+            molecule = chosen_task.input["molecule"]
+
+        # Molecule ID
+        molecule_id = get_molecule_id(molecule, "coords")
 
         # Deprecated
         deprecated = True
 
         return cls.from_molecule(
             molecule=molecule,
-            molecule_id=point_id,
+            molecule_id=molecule_id,
             last_updated=last_updated,
             created_at=created_at,
             task_ids=calc_ids,
