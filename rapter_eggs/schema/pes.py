@@ -201,12 +201,7 @@ class PESPointDoc(CoreMoleculeDoc, MoleculeMetadata):
 
             molecule = sorted_tasks[0].output.molecule
 
-            molecule_id = "{}-{}-{}-{}".format(
-                coord_hash,
-                molecule.composition.alphabetical_formula.replace(' ', ''),
-                str(int(molecule.charge)).replace("-", "m"),
-                str(mol.spin_multiplicity)
-            )
+            molecule_id = get_molecule_id(molecule, "coords")
 
             # Output molecules. No geometry should change for a single atom
             initial_molecules = [molecule]
@@ -265,12 +260,7 @@ class PESPointDoc(CoreMoleculeDoc, MoleculeMetadata):
             species_hash_nometal = best_structure_calc.species_hash_nometal
             molecule = best_structure_calc.output.molecule
 
-            molecule_id = "{}-{}-{}-{}".format(
-                coord_hash,
-                molecule.composition.alphabetical_formula.replace(' ', ''),
-                str(int(molecule.charge)).replace("-", "m"),
-                str(mol.spin_multiplicity)
-            )
+            molecule_id = get_molecule_id(molecule, "coords")
 
             freq_tasks = sorted(
                 [
@@ -389,12 +379,7 @@ class PESPointDoc(CoreMoleculeDoc, MoleculeMetadata):
         species_hash_nometal = chosen_task.species_hash_nometal
 
         # Molecule ID
-        molecule_id = "{}-{}-{}-{}".format(
-            coord_hash,
-            molecule.composition.alphabetical_formula.replace(' ', ''),
-            str(int(molecule.charge)).replace("-", "m"),
-            str(mol.spin_multiplicity)
-        )
+        molecule_id = get_molecule_id(molecule, "coords")
 
         # Deprecated
         deprecated = True
