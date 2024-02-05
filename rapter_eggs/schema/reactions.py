@@ -7,7 +7,7 @@ from pymatgen.core.structure import Molecule
 from pymatgen.analysis.graphs import MoleculeGraph
 from pymatgen.analysis.local_env import OpenBabelNN, metal_edge_extender
 
-from emmet.core.mpid import MPID, MPculeID  # TODO: consider switching to MPculeID-based IDs
+from emmet.core.mpid import MPID, MPculeID
 from emmet.core.structure import MoleculeMetadata
 
 from rapter_eggs.schema.calc_types import LevelOfTheory, TaskType
@@ -165,15 +165,15 @@ def bond_species(mol: Molecule, bond: Tuple[int, int]):
 
 class ReactionDoc(MoleculeMetadata):
 
-    reaction_id: MPID = Field(..., description="Unique identifier for this reaction.")
+    reaction_id: MPculeID = Field(..., description="Unique identifier for this reaction.")
 
-    reactant_id: MPID = Field(
+    reactant_id: MPculeID = Field(
         ..., description="Unique ID for the reactants for this reaction."
     )
-    product_id: MPID = Field(
+    product_id: MPculeID = Field(
         ..., description="Unique ID for the products for this reaction."
     )
-    transition_state_id: MPID = Field(
+    transition_state_id: MPculeID = Field(
         ..., description="Unique ID of the transition-state for this reaction."
     )
 
@@ -663,7 +663,7 @@ class ReactionDoc(MoleculeMetadata):
             pro_structure, {e: dict() for e in pro_bonds_nometal}
         )
 
-        reaction_id = "-".join([str(rct_id), str(ts_id), str(pro_id)])
+        reaction_id = ts_id
 
         return cls.from_molecule(
             meta_molecule=ts_structure,
