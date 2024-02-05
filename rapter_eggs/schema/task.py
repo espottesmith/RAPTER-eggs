@@ -36,43 +36,43 @@ class OutputSummary(BaseModel):
     scf_energy: float = Field(
         None, description="Final electronic energy for the calculation (units: Hartree)"
     )
-    gas_phase_energy: float = Field(
+    gas_phase_energy: Optional[float] = Field(
         None, description="Gas-phase energy for the calculation (units: Hartree)"
     )
-    one_electron_energy: float = Field(
+    one_electron_energy: Optional[float] = Field(
         None,
         description="Energy contribution from one-electron integrals (units: Hartree)",
     )
-    two_electron_energy: float = Field(
+    two_electron_energy: Optional[float] = Field(
         None,
         description="Energy contribution from two-electron integrals (units: Hartree)",
     )
-    a_posteriori_correction: float = Field(
+    a_posteriori_correction: Optional[float] = Field(
         None, description="Energy correction made a posteriori (units: Hartree)"
     )
-    nuclear_repulsion_energy: float = Field(
+    nuclear_repulsion_energy: Optional[float] = Field(
         None, description="Nuclear repulsion energy (units: Hartee)"
     )
     zero_point_energy: float = Field(
         None, description="Zero-point vibrational energy (units: kcal/mol)"
     )
 
-    # homo_alpha: float = Field(
-    #     None,
-    #     description="Relative energy of the alpha-electron Highest Occupied Molecular Orbital (HOMO) (units: Hartree)",
-    # )
-    # homo_beta: float = Field(
-    #     None,
-    #     description="Relative energy of the beta-electron Highest Occupied Molecular Orbital (HOMO) (units: Hartree)",
-    # )
-    # lumo_alpha: float = Field(
-    #     None,
-    #     description="Relative energy of the alpha-electron Lowest Unoccupied Molecular Orbital (LUMO) (units: Hartree)",
-    # )
-    # lumo_beta: float = Field(
-    #     None,
-    #     description="Relative energy of the alpha-electron Lowest Unoccupied Molecular Orbital (LUMO) (units: Hartree)",
-    # )
+    homo_alpha: Optional[float] = Field(
+        None,
+        description="Relative energy of the alpha-electron Highest Occupied Molecular Orbital (HOMO) (units: Hartree)",
+    )
+    homo_beta: Optional[float] = Field(
+        None,
+        description="Relative energy of the beta-electron Highest Occupied Molecular Orbital (HOMO) (units: Hartree)",
+    )
+    lumo_alpha: Optional[float] = Field(
+        None,
+        description="Relative energy of the alpha-electron Lowest Unoccupied Molecular Orbital (LUMO) (units: Hartree)",
+    )
+    lumo_beta: Optional[float] = Field(
+        None,
+        description="Relative energy of the alpha-electron Lowest Unoccupied Molecular Orbital (LUMO) (units: Hartree)",
+    )
 
     thermo: List[Dict[str, Any]] = Field(
         None,

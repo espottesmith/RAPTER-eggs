@@ -195,13 +195,18 @@ class PESPointDoc(CoreMoleculeDoc, MoleculeMetadata):
         if all([len(m) == 1 for m in initial_structures]):
             sorted_tasks = sorted(task_group, key=evaluate_task)
 
-            point_id = sorted_tasks[0].calcid
-
             coord_hash = sorted_tasks[0].coord_hash
             species_hash = sorted_tasks[0].species_hash
             species_hash_nometal = sorted_tasks[0].species_hash_nometal
 
             molecule = sorted_tasks[0].output.molecule
+
+            molecule_id = "{}-{}-{}-{}".format(
+                coord_hash,
+                molecule.composition.alphabetical_formula.replace(' ', ''),
+                str(int(molecule.charge)).replace("-", "m"),
+                str(mol.spin_multiplicity)
+            )
 
             # Output molecules. No geometry should change for a single atom
             initial_molecules = [molecule]
@@ -260,7 +265,12 @@ class PESPointDoc(CoreMoleculeDoc, MoleculeMetadata):
             species_hash_nometal = best_structure_calc.species_hash_nometal
             molecule = best_structure_calc.output.molecule
 
-            molecule_id = get_molecule_id(molecule, node_attr="coords")
+            molecule_id = "{}-{}-{}-{}".format(
+                coord_hash,
+                molecule.composition.alphabetical_formula.replace(' ', ''),
+                str(int(molecule.charge)).replace("-", "m"),
+                str(mol.spin_multiplicity)
+            )
 
             freq_tasks = sorted(
                 [
@@ -374,8 +384,17 @@ class PESPointDoc(CoreMoleculeDoc, MoleculeMetadata):
         else:
             molecule = chosen_task.input["molecule"]
 
+        coord_hash = chosen_task.coord_hash
+        species_hash = chosen_task.species_hash
+        species_hash_nometal = chosen_task.species_hash_nometal
+
         # Molecule ID
-        molecule_id = get_molecule_id(molecule, "coords")
+        molecule_id = "{}-{}-{}-{}".format(
+            coord_hash,
+            molecule.composition.alphabetical_formula.replace(' ', ''),
+            str(int(molecule.charge)).replace("-", "m"),
+            str(mol.spin_multiplicity)
+        )
 
         # Deprecated
         deprecated = True

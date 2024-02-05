@@ -181,9 +181,9 @@ class PESPointBuilder(Builder):
         to_process_hashes = set()
         for d in all_tasks:
             if d[self.tasks.key] in to_process_tasks:
-                hash = d.get("species_hash")
-                if hash:
-                    to_process_hashes.add(hash)
+                shash = d.get("species_hash")
+                if shash:
+                    to_process_hashes.add(shash)
 
         N = ceil(len(to_process_hashes) / number_splits)
 
@@ -226,8 +226,8 @@ class PESPointBuilder(Builder):
         to_process_hashes = set()
         for d in all_tasks:
             if str(d[self.tasks.key]) in to_process_tasks:
-                hash = d.get("species_hash")
-                if hash:
+                shash = d.get("species_hash")
+                if shash:
                     to_process_hashes.add(hash)
 
         self.logger.info(f"Found {len(to_process_tasks)} unprocessed tasks")
