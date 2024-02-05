@@ -257,9 +257,9 @@ class PESPointBuilder(Builder):
             "name"
         ]
 
-        for hash in to_process_hashes:
+        for shash in to_process_hashes:
             tasks_query = dict(temp_query)
-            tasks_query["species_hash"] = hash
+            tasks_query["species_hash"] = shash
             tasks = list(
                 self.tasks.query(criteria=tasks_query, properties=projected_fields)
             )
@@ -293,9 +293,13 @@ class PESPointBuilder(Builder):
         """
 
         tasks = items
-        hash = tasks[0].species_hash
+
+        if len(tasks) == 0:
+            return list()
+        
+        shash = tasks[0].species_hash
         task_ids = [task.calcid for task in tasks]
-        self.logger.debug(f"Processing {hash} : {task_ids}")
+        self.logger.debug(f"Processing {shash} : {task_ids}")
         docs = list()
 
         for group in filter_and_group_tasks(tasks):
@@ -311,7 +315,7 @@ class PESPointBuilder(Builder):
                     f" Inserted as deprecated doc: {doc.molecule_id}"
                 )
 
-        self.logger.debug(f"Produced {len(docs)} docs for {hash}")
+        self.logger.debug(f"Produced {len(docs)} docs for {shash}")
 
         return jsanitize([doc.dict() for doc in docs], allow_bson=True)
 
