@@ -138,18 +138,6 @@ class PESPointDoc(CoreMoleculeDoc, MoleculeMetadata):
         "frequencies for this point on a PES",
     )
 
-    coord_hash: str = Field(
-        None,
-        description="Weisfeiler Lehman (WL) graph hash using the atom coordinates as the graph "
-        "node attribute.",
-    )
-
-    species_hash: str = Field(
-        None,
-        description="Weisfeiler Lehman (WL) graph hash using the atom species as the "
-                    "graph node attribute."
-    )
-
     species_hash_nometal: str = Field(
         None,
         description="Weisfeiler Lehman (WL) graph hash using the atom species as the "
@@ -195,8 +183,6 @@ class PESPointDoc(CoreMoleculeDoc, MoleculeMetadata):
         if all([len(m) == 1 for m in initial_structures]):
             sorted_tasks = sorted(task_group, key=evaluate_task)
 
-            coord_hash = sorted_tasks[0].coord_hash
-            species_hash = sorted_tasks[0].species_hash
             species_hash_nometal = sorted_tasks[0].species_hash_nometal
 
             molecule = sorted_tasks[0].output.molecule
@@ -255,8 +241,6 @@ class PESPointDoc(CoreMoleculeDoc, MoleculeMetadata):
             ]
 
             best_structure_calc = sorted(geometry_optimizations, key=evaluate_task)[0]
-            coord_hash = best_structure_calc.coord_hash
-            species_hash = best_structure_calc.species_hash
             species_hash_nometal = best_structure_calc.species_hash_nometal
             molecule = best_structure_calc.output.molecule
 
@@ -337,8 +321,6 @@ class PESPointDoc(CoreMoleculeDoc, MoleculeMetadata):
             origins=origins,
             entries=entries,
             best_entries=best_entries,
-            coord_hash=coord_hash,
-            species_hash=species_hash,
             species_hash_nometal=species_hash_nometal
         )
 
@@ -373,10 +355,6 @@ class PESPointDoc(CoreMoleculeDoc, MoleculeMetadata):
             molecule = Molecule.from_dict(chosen_task.input["molecule"])
         else:
             molecule = chosen_task.input["molecule"]
-
-        coord_hash = chosen_task.coord_hash
-        species_hash = chosen_task.species_hash
-        species_hash_nometal = chosen_task.species_hash_nometal
 
         # Molecule ID
         molecule_id = get_molecule_id(molecule, "coords")
