@@ -77,12 +77,12 @@ def filter_and_group_tasks(
             m = task.output.molecule
         else:
             m = task.input["molecule"]
-        m.index = idx  # type: ignore
+        m.idx = idx  # type: ignore
         molecules.append(m)
 
     grouped_molecules = group_molecules(molecules)
     for group in grouped_molecules:
-        grouped_tasks = [filtered_tasks[mol.index] for mol in group]  # type: ignore
+        grouped_tasks = [filtered_tasks[mol.idx] for mol in group]  # type: ignore
         yield grouped_tasks
 
 
