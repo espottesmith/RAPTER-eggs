@@ -228,7 +228,7 @@ class PESPointBuilder(Builder):
             if str(d[self.tasks.key]) in to_process_tasks:
                 shash = d.get("species_hash")
                 if shash:
-                    to_process_hashes.add(hash)
+                    to_process_hashes.add(shash)
 
         self.logger.info(f"Found {len(to_process_tasks)} unprocessed tasks")
         self.logger.info(f"Found {len(to_process_hashes)} unprocessed structures")
