@@ -57,22 +57,22 @@ class OutputSummary(BaseModel):
         None, description="Zero-point vibrational energy (units: kcal/mol)"
     )
 
-    homo_alpha: float = Field(
-        None,
-        description="Relative energy of the alpha-electron Highest Occupied Molecular Orbital (HOMO) (units: Hartree)",
-    )
-    homo_beta: float = Field(
-        None,
-        description="Relative energy of the beta-electron Highest Occupied Molecular Orbital (HOMO) (units: Hartree)",
-    )
-    lumo_alpha: float = Field(
-        None,
-        description="Relative energy of the alpha-electron Lowest Unoccupied Molecular Orbital (LUMO) (units: Hartree)",
-    )
-    lumo_beta: float = Field(
-        None,
-        description="Relative energy of the alpha-electron Lowest Unoccupied Molecular Orbital (LUMO) (units: Hartree)",
-    )
+    # homo_alpha: float = Field(
+    #     None,
+    #     description="Relative energy of the alpha-electron Highest Occupied Molecular Orbital (HOMO) (units: Hartree)",
+    # )
+    # homo_beta: float = Field(
+    #     None,
+    #     description="Relative energy of the beta-electron Highest Occupied Molecular Orbital (HOMO) (units: Hartree)",
+    # )
+    # lumo_alpha: float = Field(
+    #     None,
+    #     description="Relative energy of the alpha-electron Lowest Unoccupied Molecular Orbital (LUMO) (units: Hartree)",
+    # )
+    # lumo_beta: float = Field(
+    #     None,
+    #     description="Relative energy of the alpha-electron Lowest Unoccupied Molecular Orbital (LUMO) (units: Hartree)",
+    # )
 
     thermo: List[Dict[str, Any]] = Field(
         None,
