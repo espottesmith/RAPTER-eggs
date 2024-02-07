@@ -177,20 +177,40 @@ class ReactionDoc(MoleculeMetadata):
         ..., description="Unique ID of the transition-state for this reaction."
     )
 
-    deprecated: bool = Field(False, description="Is this reaction deprecated?")
-
     reactant_structure: Molecule = Field(
-        None, description="Molecule object describing the reactants of this reaction."
+        ..., description="Molecule object describing the reactants of this reaction."
     )
     reactant_molecule_graph: MoleculeGraph = Field(
-        None,
+        ...,
         description="Structural and bonding information for the reactants of this reaction.",
     )
     reactant_molecule_graph_nometal: MoleculeGraph = Field(
-        None,
+        ...,
         description="Structural and bonding information for the reactants of this reaction, "
         "removing all metals.",
     )
+
+    product_structure: Molecule = Field(
+        ..., description="Molecule object describing the products of this reaction."
+    )
+    product_molecule_graph: MoleculeGraph = Field(
+        ...,
+        description="Structural and bonding information for the products of this reaction.",
+    )
+    product_molecule_graph_nometal: MoleculeGraph = Field(
+        ...,
+        description="Structural and bonding information for the products of this reaction, "
+        "removing all metals.",
+    )
+
+    transition_state_structure: Molecule = Field(
+        ...,
+        description="Molecule object describing the transition-state of this reaction.",
+    )
+
+    deprecated: bool = Field(False, description="Is this reaction deprecated?")
+
+    # Reactant properties
     reactant_bonds: List[Tuple[int, int]] = Field(
         [],
         description="List of bonds in the reactants in the form (a, b), where a and b are 0-indexed "
@@ -201,58 +221,46 @@ class ReactionDoc(MoleculeMetadata):
         description="List of bonds in the reactants in the form (a, b), where a and b are 0-indexed "
         "atom indices, with all metal ions removed",
     )
-    reactant_coord_hash: str = Field(
+    reactant_coord_hash: Optional[str] = Field(
         None,
         description="Weisfeiler Lehman (WL) graph hash of the reactant using the atom coordinates as the graph "
         "node attribute.",
     )
-    reactant_species_hash: str = Field(
+    reactant_species_hash: Optional[str] = Field(
         None,
         description="Weisfeiler Lehman (WL) graph hash of the reactant using the atom species as the "
                     "graph node attribute."
     )
-    reactant_species_hash_nometal: str = Field(
+    reactant_species_hash_nometal: Optional[str] = Field(
         None,
         description="Weisfeiler Lehman (WL) graph hash of the reactant using the atom species as the "
                     "graph node attribute, where metal bonds are excluded."
     )
-    reactant_energy: float = Field(
+    reactant_energy: Optional[float] = Field(
         None,
         description="Electronic energy of the reactants of this reaction (units: eV).",
     )
-    reactant_zpe: float = Field(
+    reactant_zpe: Optional[float] = Field(
         None,
         description="Vibrational zero-point energy of the reactants of this reaction (units: eV).",
     )
-    reactant_enthalpy: float = Field(
+    reactant_enthalpy: Optional[float] = Field(
         None, description="Enthalpy of the reactants of this reaction (units: eV)."
     )
-    reactant_entropy: float = Field(
+    reactant_entropy: Optional[float] = Field(
         None, description="Entropy of the reactants of this reaction (units: eV/K)."
     )
-    reactant_free_energy: float = Field(
+    reactant_free_energy: Optional[float] = Field(
         None,
         description="Gibbs free energy of the reactants of this reaction at 298.15K (units: eV).",
     )
     reactant_charges: List[Optional[float]] = Field(
-        None,
+        [],
         description="Atomic partial charges of the reactants of this reaction based on the electrostatic potential "
                     "method."
     )
 
     # Product properties
-    product_structure: Molecule = Field(
-        None, description="Molecule object describing the products of this reaction."
-    )
-    product_molecule_graph: MoleculeGraph = Field(
-        None,
-        description="Structural and bonding information for the products of this reaction.",
-    )
-    product_molecule_graph_nometal: MoleculeGraph = Field(
-        None,
-        description="Structural and bonding information for the products of this reaction, "
-        "removing all metals.",
-    )
     product_bonds: List[Tuple[int, int]] = Field(
         [],
         description="List of bonds in the products in the form (a, b), where a and b are 0-indexed "
@@ -263,100 +271,96 @@ class ReactionDoc(MoleculeMetadata):
         description="List of bonds in the products in the form (a, b), where a and b are 0-indexed "
         "atom indices, with all metal ions removed",
     )
-    product_coord_hash: str = Field(
+    product_coord_hash: Optional[str] = Field(
         None,
         description="Weisfeiler Lehman (WL) graph hash of the product using the atom coordinates as the graph "
         "node attribute.",
     )
-    product_species_hash: str = Field(
+    product_species_hash: Optional[str] = Field(
         None,
         description="Weisfeiler Lehman (WL) graph hash of the product using the atom species as the "
                     "graph node attribute."
     )
-    product_species_hash_nometal: str = Field(
+    product_species_hash_nometal: Optional[str] = Field(
         None,
         description="Weisfeiler Lehman (WL) graph hash of the product using the atom species as the "
                     "graph node attribute, where metal bonds are excluded."
     )
-    product_energy: float = Field(
+    product_energy: Optional[float] = Field(
         None,
         description="Electronic energy of the products of this reaction (units: eV).",
     )
-    product_zpe: float = Field(
+    product_zpe: Optional[float] = Field(
         None,
         description="Vibrational zero-point energy of the products of this reaction (units: eV).",
     )
-    product_enthalpy: float = Field(
+    product_enthalpy: Optional[float] = Field(
         None, description="Enthalpy of the products of this reaction (units: eV)."
     )
-    product_entropy: float = Field(
+    product_entropy: Optional[float] = Field(
         None, description="Entropy of the products of this reaction (units: eV/K)."
     )
-    product_free_energy: float = Field(
+    product_free_energy: Optional[float] = Field(
         None,
         description="Gibbs free energy of the products of this reaction at 298.15K (units: eV).",
     )
     product_charges: List[Optional[float]] = Field(
-        None,
+        [],
         description="Atomic partial charges of the products of this reaction based on the electrostatic potential "
                     "method."
     )
 
     # TS properties
-    transition_state_structure: Molecule = Field(
-        None,
-        description="Molecule object describing the transition-state of this reaction.",
-    )
-    transition_state_energy: float = Field(
+    transition_state_energy: Optional[float] = Field(
         None,
         description="Electronic energy of the transition-state of this reaction (units: eV).",
     )
-    transition_state_zpe: float = Field(
+    transition_state_zpe: Optional[float] = Field(
         None,
         description="Vibrational zero-point energy of the transition-state of this reaction (units: eV).",
     )
-    transition_state_enthalpy: float = Field(
+    transition_state_enthalpy: Optional[float] = Field(
         None,
         description="Enthalpy of the transition-state of this reaction (units: eV).",
     )
-    transition_state_entropy: float = Field(
+    transition_state_entropy: Optional[float] = Field(
         None,
         description="Entropy of the transition-state of this reaction (units: eV/K).",
     )
-    transition_state_free_energy: float = Field(
+    transition_state_free_energy: Optional[float] = Field(
         None,
         description="Gibbs free energy of the transition-state of this reaction at 298.15K (units: eV).",
     )
     transition_state_charges: List[Optional[float]] = Field(
-        None,
+        [],
         description="Atomic partial charges of the transition-state of this reaction using the electrostatic potential "
                     "method."
     )
 
     # Reaction thermodynamics
-    dE: float = Field(
+    dE: Optional[float] = Field(
         None, description="Electronic energy change of this reaction (units: eV)."
     )
-    dH: float = Field(None, description="Enthalpy change of this reaction (units: eV).")
-    dS: float = Field(
+    dH: Optional[float] = Field(None, description="Enthalpy change of this reaction (units: eV).")
+    dS: Optional[float] = Field(
         None, description="Entropy change of this reaction (units: eV/K)."
     )
-    dG: float = Field(None, description="Gibbs free energy (units: eV).")
+    dG: Optional[float] = Field(None, description="Gibbs free energy (units: eV).")
 
     # Reaction barrier
-    dE_barrier: float = Field(
+    dE_barrier: Optional[float] = Field(
         None,
         description="Electronic energy barrier (TS - reactant) of this reaction (units: eV).",
     )
-    dH_barrier: float = Field(
+    dH_barrier: Optional[float] = Field(
         None,
         description="Enthalpy barrier (TS - reactant) of this reaction " "(units: eV).",
     )
-    dS_barrier: float = Field(
+    dS_barrier: Optional[float] = Field(
         None,
         description="Entropy barrier (TS - reactant) of this reaction (units: eV/K).",
     )
-    dG_barrier: float = Field(
+    dG_barrier: Optional[float] = Field(
         None, description="Gibbs free energy barrier (TS - reactant) " "(units: eV)."
     )
 
@@ -402,8 +406,8 @@ class ReactionDoc(MoleculeMetadata):
         "carbon-oxygen bond. This excludes bonds involving metal ions.",
     )
 
-    similar_reactions: List[MPID] = Field(
-        None,
+    similar_reactions: List[MPculeID] = Field(
+        [],
         description="Reactions that are similar to this one (for instance, because the same types "
         "of bonds are broken or formed)",
     )
